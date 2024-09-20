@@ -1,0 +1,2 @@
+# IndieWriters
+IndieWriters is a platform for independent writers to create and share their work, while readers can explore, follow, and engage with their favorite writers. This repository contains the frontend of the platform, providing a clean, user-friendly interface for writing, reading, and discovering content.
