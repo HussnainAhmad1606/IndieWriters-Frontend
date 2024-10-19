@@ -88,7 +88,9 @@ export function Navbar() {
 
     <div className="">
         <Button className="mx-5">Start Publishing</Button>
-        <Button variant={"outline"}>Sign In</Button>
+        <Button variant={"outline"} asChild>
+  <Link href="/login">Login</Link>
+</Button>
     </div>
 
     </div>
