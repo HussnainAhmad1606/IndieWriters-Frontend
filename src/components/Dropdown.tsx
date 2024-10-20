@@ -16,7 +16,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import Link from "next/link"
-import { Link1Icon } from "@radix-ui/react-icons"
+import { DashboardIcon, Link1Icon } from "@radix-ui/react-icons"
 
 
 export function AvatarDropDown({ logout, userName }) {
@@ -35,6 +35,13 @@ export function AvatarDropDown({ logout, userName }) {
                 <DropdownMenuLabel>Hi, {userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                        <Link href={`/dashboard`} className="flex items-center justify-between">
+                            <DashboardIcon className="mr-2 h-4 w-4" />
+                            <span>Dashboard</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    
                     <DropdownMenuItem>
                         <Link href={`/settings`} className="flex items-center justify-between">
                             <User2Icon className="mr-2 h-4 w-4" />

@@ -5,6 +5,7 @@ import {Navbar} from "@/components/Navbar"
 import { Lato } from "next/font/google"
 import {Toaster} from "react-hot-toast";
 import NextTopLoader from 'nextjs-toploader';
+import Footer from "@/components/Footer";
 const lato = Lato({ subsets:["latin"],weight: ['400', '700'] });
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,6 +37,8 @@ export default function RootLayout({
         <Toaster/>
         <Navbar/>
         {children}
+
+        <Footer/>
       </body>
     </html>
   );
