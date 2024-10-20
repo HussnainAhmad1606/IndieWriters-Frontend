@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Button } from "./ui/button"
 import { SearchModal } from "./SearchModal"
+import { AvatarDropDown } from "./Dropdown"
+import { toast } from "react-hot-toast"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -54,7 +56,13 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ]
 
+
+
 export function Navbar() {
+
+  const logout = async() => {
+    toast.success("Logged out successfully");
+  }
   return (
     <div className="m-5 flex justify-between items-center">
 
@@ -89,10 +97,13 @@ export function Navbar() {
 
     <div className="flex justify-center items-center">
       <SearchModal/>
-        <Button className="mx-5">Start Publishing</Button>
+        <Button className="mx-5">Find Publisher</Button>
         <Button variant={"outline"} asChild>
   <Link href="/login">Login</Link>
 </Button>
+<div className="ml-5">
+<AvatarDropDown userName={"Psycho"} logout={logout}/>
+</div>
     </div>
 
     </div>

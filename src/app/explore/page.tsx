@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Heart, MessageCircle, Share2, TrendingUp, UserPlus } from "lucide-react"
-
+import Link from "next/link"
 export default function WriterFeed() {
   const posts = [
     {
@@ -162,7 +162,7 @@ export default function WriterFeed() {
 
   const trendingTopics = ["#FlashFiction", "#MemoirMonday", "#PoetryPrompts", "#WritingCommunity", "#AmWriting"]
 
-  
+
   const writersToFollow = [
     { name: "Alex Johnson", username: "alexj", avatar: "/placeholder-user.jpg", genre: "Sci-Fi" },
     { name: "Maria Garcia", username: "mariag", avatar: "/placeholder-user.jpg", genre: "Romance" },
@@ -177,7 +177,10 @@ export default function WriterFeed() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Explore</h1>
-          <Button>New Post</Button>
+        
+          <Button variant={"outline"} asChild>
+  <Link href="/posts/new-post">New Post</Link>
+</Button>
         </div>
       </header>
       <main className="container mx-auto px-4 py-8 flex gap-8">
