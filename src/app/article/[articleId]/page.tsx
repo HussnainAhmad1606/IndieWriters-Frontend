@@ -28,8 +28,8 @@ export default function ArticlePage() {
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="text-xl font-semibold">Dr. Jane Doe</h2>
-            <p className="text-muted-foreground">AI Researcher at Tech University</p>
+            <h2 className="text-xl font-semibold">Dr. Psycho</h2>
+            <p className="text-muted-foreground">CEO @PsychoDevs</p>
           </div>
         </section>
 
@@ -56,16 +56,16 @@ export default function ArticlePage() {
           <Card>
             <CardHeader className="flex flex-row items-center gap-4">
               <Avatar className="h-16 w-16">
-                <AvatarImage src="/placeholder.svg?height=64&width=64" alt="Dr. Jane Doe" />
+                <AvatarImage src="/psycho.png" alt="Dr. Jane Doe" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
               <div>
-                <h2 className="text-2xl font-semibold">Dr. Jane Doe</h2>
-                <p className="text-muted-foreground">AI Researcher at Tech University</p>
+                <h2 className="text-2xl font-semibold">Dr. Psycho</h2>
+                <p className="text-muted-foreground">CEO @PsychoDevs | UET 3rd year</p>
               </div>
             </CardHeader>
             <CardContent>
-              <p>Dr. Jane Doe is a leading researcher in Artificial Intelligence, focusing on ethical AI development and its societal impacts. With over 15 years of experience in the field, she has published numerous papers and spoken at conferences worldwide.</p>
+              <p>Dr. Psycho is a leading researcher in Artificial Intelligence, focusing on ethical AI development and its societal impacts. With over 15 years of experience in the field, she has published numerous papers and spoken at conferences worldwide.</p>
             </CardContent>
             <CardFooter>
               <Button variant="outline">View Profile</Button>

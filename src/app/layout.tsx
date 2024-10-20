@@ -41,7 +41,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
 
-        <NextTopLoader />
+        <NextTopLoader height={5} color="#dc2626" />
         <Toaster/>
         <Navbar/>
         {children}
