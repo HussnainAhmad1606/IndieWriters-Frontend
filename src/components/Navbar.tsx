@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Button } from "./ui/button"
+import { SearchModal } from "./SearchModal"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -86,7 +87,8 @@ export function Navbar() {
     </NavigationMenu>
 
 
-    <div className="">
+    <div className="flex justify-center items-center">
+      <SearchModal/>
         <Button className="mx-5">Start Publishing</Button>
         <Button variant={"outline"} asChild>
   <Link href="/login">Login</Link>
