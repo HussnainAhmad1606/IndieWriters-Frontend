@@ -226,7 +226,12 @@ export default function WriterFeed() {
                       {post.shares}
                     </Button>
                   </div>
+                  <div>
                   <span className="text-sm text-muted-foreground">{post.date}</span>
+                  <Button className="ml-5" variant={"default"} asChild>
+  <Link href="/article/225">Read</Link>
+</Button>
+                  </div>
                 </CardFooter>
               </Card>
             ))}
