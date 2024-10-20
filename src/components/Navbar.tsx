@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
+import * as React from "react";
+import Link from "next/link";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,11 +12,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { Button } from "./ui/button"
-import { SearchModal } from "./SearchModal"
-import { AvatarDropDown } from "./Dropdown"
-import { toast } from "react-hot-toast"
+} from "@/components/ui/navigation-menu";
+import { Button } from "./ui/button";
+import { SearchModal } from "./SearchModal";
+import { AvatarDropDown } from "./Dropdown";
+import { toast } from "react-hot-toast";
+import { ThemeToggle } from "./ThemeToggle";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -54,62 +55,55 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
-]
-
-
+];
 
 export function Navbar() {
-
-  const logout = async() => {
+  const logout = async () => {
     toast.success("Logged out successfully");
-  }
+  };
   return (
-    <div className="m-5 flex justify-between items-center">
+    <div className="m-5 flex flex-col lg:flex-row justify-between items-center">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <Link href="/" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/explore" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Explore
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/about" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                About
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
 
-   
-    <NavigationMenu>
-      <NavigationMenuList>
-      
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/explore" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Explore
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/about" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              About
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-
-
-    <div className="flex justify-center items-center">
-      <SearchModal/>
+      <div className="flex justify-center items-center">
+        <ThemeToggle />
+        <SearchModal />
         <Button className="mx-5" asChild>
-  <Link href="/find-publishers">Find Publisher</Link>
-</Button>
+          <Link href="/find-publishers">Find Publisher</Link>
+        </Button>
         <Button variant={"outline"} asChild>
-  <Link href="/login">Login</Link>
-</Button>
-<div className="ml-5">
-<AvatarDropDown userName={"Psycho"} logout={logout}/>
-</div>
+          <Link href="/login">Login</Link>
+        </Button>
+        <div className="ml-5">
+          <AvatarDropDown userName={"Psycho"} logout={logout} />
+        </div>
+      </div>
     </div>
-
-    </div>
-  )
+  );
 }
 
 const ListItem = React.forwardRef<
@@ -134,6 +128,6 @@ const ListItem = React.forwardRef<
         </a>
       </NavigationMenuLink>
     </li>
-  )
-})
-ListItem.displayName = "ListItem"
+  );
+});
+ListItem.displayName = "ListItem";

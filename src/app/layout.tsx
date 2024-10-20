@@ -6,6 +6,7 @@ import { Lato } from "next/font/google"
 import {Toaster} from "react-hot-toast";
 import NextTopLoader from 'nextjs-toploader';
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/theme-provider"
 const lato = Lato({ subsets:["latin"],weight: ['400', '700'] });
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,12 +34,20 @@ export default function RootLayout({
       <body
         className={` ${lato.className} antialiased`}
       >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+
         <NextTopLoader />
         <Toaster/>
         <Navbar/>
         {children}
 
         <Footer/>
+          </ThemeProvider>
       </body>
     </html>
   );

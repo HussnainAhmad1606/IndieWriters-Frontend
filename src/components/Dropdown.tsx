@@ -1,4 +1,5 @@
 import {
+    Crown,
     LogOut, User2Icon,
 
 } from "lucide-react"
@@ -36,9 +37,15 @@ export function AvatarDropDown({ logout, userName }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
+                        <Link href={`/admin`} className="flex items-center justify-between">
+                            <Crown className="mr-2 h-4 w-4" />
+                            <span>Admin Dashboard</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
                         <Link href={`/dashboard`} className="flex items-center justify-between">
                             <DashboardIcon className="mr-2 h-4 w-4" />
-                            <span>Dashboard</span>
+                            <span>Writer Dashboard</span>
                         </Link>
                     </DropdownMenuItem>
                     
