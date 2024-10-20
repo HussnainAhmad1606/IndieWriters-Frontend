@@ -97,7 +97,9 @@ export function Navbar() {
 
     <div className="flex justify-center items-center">
       <SearchModal/>
-        <Button className="mx-5">Find Publisher</Button>
+        <Button className="mx-5" asChild>
+  <Link href="/find-publishers">Find Publisher</Link>
+</Button>
         <Button variant={"outline"} asChild>
   <Link href="/login">Login</Link>
 </Button>
