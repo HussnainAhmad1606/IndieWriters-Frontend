@@ -11,6 +11,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { useUserStore } from '@/store/store';
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { comment } from 'postcss';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 function page({params}:any) {
 
     const {postId} = params;
@@ -45,6 +50,23 @@ function page({params}:any) {
           toast.success(re.data.message)
           setComments([...comments, comment])
           setNewComment("")
+        }
+        else {
+          toast.error(re.data.message)
+        }
+      }
+
+
+      const articleUpdate = async() => {
+        const data = {
+          postId: postId,
+          title: title,
+          description: description,
+          tags: tags
+        }
+        const re = await axios.post("/api/posts/edit-post", data)
+        if (re.data.type == "success"){
+          toast.success(re.data.message)
         }
         else {
           toast.error(re.data.message)
@@ -112,6 +134,41 @@ function page({params}:any) {
         className="prose max-w-none"
       dangerouslySetInnerHTML={{ __html: content }} 
     />
+        <Separator className="my-6" />
+       {
+        author?._id==UserId && (
+          <Dialog>
+          <DialogTrigger asChild>
+            <Button className="mt-4">Edit Article</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Article Details</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Post title:
+            </Label>
+            <Input value={title} onChange={e=>setTitle(e.target.value)} id="name" className="col-span-3" />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Post Description:
+            </Label>
+            <Input value={description} onChange={e=>setDescription(e.target.value)} id="name" className="col-span-3" />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Post Tags:
+            </Label>
+            <Input value={tags} onChange={e=>setTags(e.target.value)} id="name" className="col-span-3" />
+        </div>
+
+            <Button onClick={articleUpdate}>Update</Button>
+          </DialogContent>
+        </Dialog>
+        )
+       }
         <Separator className="my-6" />
         <div className="flex flex-wrap gap-2">
           {

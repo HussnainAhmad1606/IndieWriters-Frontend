@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -8,9 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useUserStore } from "@/store/store"
+import { format } from 'timeago.js';
+
+import axios from "axios"
 import { Edit, FileText, PlusIcon, ThumbsUp, Trash2, TrendingUp, Users } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 export default function WriterAnalytics() {
+
+  const {UserId, Username} = useUserStore();
+  const [likes, setLikes] = useState(0);
+  const [articles, setArticles] = useState([]);
+
+  const getData = async() => {
+    const re = await axios.post("/api/analytics/get-analytics", {
+      userId:UserId
+  })
+
+  if (re.data.type == "success") {
+    setArticles(re.data.posts);
+    let likes = 0;
+    re.data.posts.forEach((post:any) => {
+      likes += post.likes;
+    });
+    setLikes(likes);
+  }
+  else {
+    toast.error(re.data.message)
+  }
+  }
   const analyticsData = {
     totalArticles: 42,
     totalViews: 150000,
@@ -18,18 +47,28 @@ export default function WriterAnalytics() {
     averageReadTime: 4.5,
   }
 
-  const articles = [
-    { id: 1, title: "The Future of AI", views: 12000, likes: 580, publishDate: "2023-08-01" },
-    { id: 2, title: "10 Tips for Productive Writing", views: 8500, likes: 420, publishDate: "2023-07-15" },
-    { id: 3, title: "Understanding Blockchain Technology", views: 10200, likes: 505, publishDate: "2023-06-30" },
-    { id: 4, title: "The Impact of Social Media on Society", views: 15000, likes: 730, publishDate: "2023-06-10" },
-    { id: 5, title: "Sustainable Living: A Beginner's Guide", views: 9800, likes: 490, publishDate: "2023-05-22" },
-  ]
 
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const deletePost = async(postId:string) => {
+    const re = await axios.post("/api/posts/delete-post", {
+      postId:postId
+    })
+
+    if (re.data.type == "success") {
+      toast.success(re.data.message)
+      getData();
+    }
+    else {
+      toast.error(re.data.message);
+    }
+  }
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-center text-3xl font-bold mb-8">Dashboard</h1>
-      <h1 className="text-center text-2xl font-bold mb-8">Welcome, {"Psycho"}</h1>
+      <h1 className="text-center text-2xl font-bold mb-8">Welcome, {Username}</h1>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <Card>
@@ -38,36 +77,20 @@ export default function WriterAnalytics() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalArticles}</div>
+            <div className="text-2xl font-bold">{articles.length}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Views</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalViews.toLocaleString()}</div>
-          </CardContent>
-        </Card>
+       
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Likes</CardTitle>
             <ThumbsUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalLikes.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{likes}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg. Read Time</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.averageReadTime} min</div>
-          </CardContent>
-        </Card>
+   
       </div>
 
       <div className="my-5 flex justify-between items-center">
@@ -84,7 +107,6 @@ export default function WriterAnalytics() {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead>Views</TableHead>
               <TableHead>Likes</TableHead>
               <TableHead>Publish Date</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -92,17 +114,15 @@ export default function WriterAnalytics() {
           </TableHeader>
           <TableBody>
             {articles.map((article) => (
-              <TableRow key={article.id}>
+              <TableRow key={article._id}>
                 <TableCell className="font-medium">{article.title}</TableCell>
-                <TableCell>{article.views.toLocaleString()}</TableCell>
-                <TableCell>{article.likes.toLocaleString()}</TableCell>
-                <TableCell>{article.publishDate}</TableCell>
+                <TableCell>{article.likes.length}</TableCell>
+                <TableCell>{format(article.createdAt)}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" className="mr-2">
-                    <Edit className="h-4 w-4" />
-                    <span className="sr-only">Edit</span>
-                  </Button>
-                  <Button variant="ghost" size="icon" className="text-destructive">
+                 
+                  <Button onClick={()=> {
+                    deletePost(article._id)
+                  }} variant="ghost" size="icon" className="text-destructive">
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Delete</span>
                   </Button>

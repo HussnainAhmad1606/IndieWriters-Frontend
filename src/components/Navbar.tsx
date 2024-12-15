@@ -80,6 +80,7 @@ export function Navbar() {
       SetUsername(req.data.user.username);
       SetEmail(req.data.user.email);
       SetUserId(req.data.user._id);
+      SetRole(req.data.user.role)
     }
     else {
       toast.error("token expired. Please log in")
