@@ -18,6 +18,7 @@ import { SearchModal } from "./SearchModal";
 import { AvatarDropDown } from "./Dropdown";
 import { toast } from "react-hot-toast";
 import { ThemeToggle } from "./ThemeToggle";
+import { useUserStore } from "@/store/store";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -58,6 +59,7 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export function Navbar() {
+  const {IsLogin, Username, Role} = useUserStore();
   const logout = async () => {
     toast.success("Logged out successfully");
   };
@@ -98,9 +100,14 @@ export function Navbar() {
         <Button variant={"outline"} asChild>
           <Link href="/login">Login</Link>
         </Button>
-        <div className="ml-5">
-          <AvatarDropDown userName={"Psycho"} logout={logout} />
-        </div>
+        {
+          IsLogin?(
+            <div className="ml-5">
+            <AvatarDropDown role={Role} userName={Username} logout={logout} />
+          </div>
+          ):null
+        }
+       
       </div>
     </div>
   );

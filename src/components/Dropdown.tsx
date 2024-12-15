@@ -20,7 +20,7 @@ import Link from "next/link"
 import { DashboardIcon, Link1Icon } from "@radix-ui/react-icons"
 
 
-export function AvatarDropDown({ logout, userName }) {
+export function AvatarDropDown({ logout, userName, role }:any) {
 
     return (
         <DropdownMenu >
@@ -36,18 +36,27 @@ export function AvatarDropDown({ logout, userName }) {
                 <DropdownMenuLabel>Hi, {userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    {
+                        role=="admin"?(
+                            <DropdownMenuItem>
                         <Link href={`/admin`} className="flex items-center justify-between">
                             <Crown className="mr-2 h-4 w-4" />
                             <span>Admin Dashboard</span>
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                        ):null
+                    }
+                    
+                    {
+                        role=="writer"?(
+                            <DropdownMenuItem>
                         <Link href={`/dashboard`} className="flex items-center justify-between">
                             <DashboardIcon className="mr-2 h-4 w-4" />
                             <span>Writer Dashboard</span>
                         </Link>
                     </DropdownMenuItem>
+                        ):null
+                    }
                     
                     <DropdownMenuItem>
                         <Link href={`/settings`} className="flex items-center justify-between">
