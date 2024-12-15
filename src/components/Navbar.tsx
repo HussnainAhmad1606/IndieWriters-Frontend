@@ -19,6 +19,7 @@ import { AvatarDropDown } from "./Dropdown";
 import { toast } from "react-hot-toast";
 import { ThemeToggle } from "./ThemeToggle";
 import { useUserStore } from "@/store/store";
+import axios from "axios";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -59,10 +60,37 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export function Navbar() {
+  const {SetIsLogin, SetUsername, SetEmail, SetUserId, SetRole, UserId} = useUserStore();
+
   const {IsLogin, Username, Role} = useUserStore();
   const logout = async () => {
     toast.success("Logged out successfully");
   };
+
+  
+  const verifyToken = async() => {
+    const token = localStorage.getItem("token");
+    const req = await axios.post("/api/auth/verify", {
+      token: token
+    })
+    console.log(req)
+
+    if (req.data.type == "success") {
+      SetIsLogin(true);
+      SetUsername(req.data.user.username);
+      SetEmail(req.data.user.email);
+      SetUserId(req.data.user._id);
+    }
+    else {
+      toast.error("token expired. Please log in")
+    }
+
+  }
+
+  React.useEffect(() => {
+    verifyToken();
+  }, [])
+  
   return (
     <div className="m-5 flex flex-col lg:flex-row justify-between items-center">
       <NavigationMenu>
@@ -103,7 +131,7 @@ export function Navbar() {
         {
           IsLogin?(
             <div className="ml-5">
-            <AvatarDropDown role={Role} userName={Username} logout={logout} />
+            <AvatarDropDown role={Role} userId={UserId} userName={Username} logout={logout} />
           </div>
           ):null
         }

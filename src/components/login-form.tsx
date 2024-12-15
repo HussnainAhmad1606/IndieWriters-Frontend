@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
@@ -21,6 +21,8 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const {SetIsLogin, SetUsername, SetEmail, SetUserId, SetRole} = useUserStore();
   const router = useRouter();
+
+  
   const login = async() => {
     const data = {
       email: email,
@@ -30,6 +32,7 @@ export function LoginForm() {
     console.log(response.data)
 
     if (response.data.type == "success"){
+      localStorage.setItem("token", response.data.token);
       toast.success(response.data.message);
       SetIsLogin(true);
       SetUsername(response.data.userData.username);
@@ -43,6 +46,7 @@ export function LoginForm() {
     }
 
   }
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
