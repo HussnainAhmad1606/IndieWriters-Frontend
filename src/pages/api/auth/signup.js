@@ -27,7 +27,9 @@ const signupHandler = async (req, res) => {
             email: email,
             name: name,
             role: role,
-            password: hashedPassword
+            password: hashedPassword,
+            bio: "",
+            isPublic: true
         })
     
         await user.save();

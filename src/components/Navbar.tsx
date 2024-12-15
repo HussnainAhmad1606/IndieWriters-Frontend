@@ -125,9 +125,14 @@ export function Navbar() {
         <Button className="mx-5" asChild>
           <Link href="/find-publishers">Find Publisher</Link>
         </Button>
-        <Button variant={"outline"} asChild>
+        {
+          !IsLogin?(
+<Button variant={"outline"} asChild>
           <Link href="/login">Login</Link>
         </Button>
+          ):null
+        }
+        
         {
           IsLogin?(
             <div className="ml-5">

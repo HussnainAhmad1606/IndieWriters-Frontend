@@ -19,18 +19,137 @@ import {
 } from "@/components/ui/tabs"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-import { Facebook } from "lucide-react"
+import { Facebook, FileChartColumnIncreasingIcon } from "lucide-react"
 import { toast } from "react-hot-toast"
+import axios from "axios"
+import { useUserStore } from "@/store/store"
+import { useEffect, useState } from "react"
 
 export default function TabsDemo() {
+  const [facebook, setFacebook] = useState("")
+  const [twitter, setTwitter] = useState("")
+  const [medium, setMedium] = useState("")
+  const [substack, setSubstack] = useState("")
+  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
+  const [isPublic, setIsPublic] = useState("public");
+  const [bio, setBio] = useState("")
+  const {UserId} = useUserStore();
+  const getSocialMedia = async() => {
+    console.log(UserId)
+    const re = await axios.post("/api/socials/get-socials", {
+      userId:UserId
+  })
+  if (re.data.type == "success") {
+
+    setFacebook(re.data.user.facebook);
+    setTwitter(re.data.user.twitter);
+    setMedium(re.data.user.medium);
+    setSubstack(re.data.user.substack);
+ 
+
+  }
+  else {
+    toast.error(re.data.message)
+  }
+}
 
   const profileSettings = async() => {
     toast.success("Profile settings saved");
+    updateProfileData();
   }
 
   const socialMediaSettings = async() => {
-    toast.success("Social Media settings saved")
+    toast.success("Social Media settings saved");
+    const re = await axios.post("/api/socials/update-socials", {
+      facebook: facebook,
+      twitter: twitter,
+      medium: medium,
+      substack: substack,
+      userId: UserId
+    })
+
+    if (re.data.type == "success"){
+      toast.success(re.data.message)
+    }
+    else {
+      toast.error(re.data.message)
+    }
+
   }
+
+  const getProfileData = async() => {
+    const re = await axios.post("/api/settings/get-profile-data", {
+      userId: UserId
+    })
+    if (re.data.type == "success"){
+      setName(re.data.user.name);
+      setUsername(re.data.user.username);
+      setBio(re.data.user.bio);
+      setIsPublic(re.data.user.isPublic)
+
+    }
+    else {
+      toast.error(re.data.message);
+    }
+  }
+
+  
+
+
+  const updateProfileData = async() => {
+    const re = await axios.post("/api/settings/update-profile-data", {
+      userId: UserId,
+      name: name,
+      username: username,
+      bio: bio
+    })
+    if (re.data.type == "success"){
+      toast.success(re.data.message);
+      setName(re.data.user.name);
+      setUsername(re.data.user.username);
+      setBio(re.data.user.bio);
+
+    }
+    else {
+      toast.error(re.data.message);
+    }
+  }
+
+  const privacySettings = async() => {
+    const re = await axios.post("/api/settings/update-privacy-settings", {
+      userId: UserId,
+      isPublic: isPublic
+    })
+    if (re.data.type == "success"){
+      toast.success("Privacy settings saved");
+      setIsPublic(re.data.user.isPublic==true?"public":"private");
+    }
+    else {
+      toast.error(re.data.message);
+    }
+}
+
+ const handleChange = async(value:string) => {
+    setIsPublic(value);
+    console.log("Selected Value:", value);
+    const re = await axios.post("/api/settings/update-privacy-settings", {
+      userId: UserId,
+      isPublic: value=="public"?true:false
+  });
+
+  if (re.data.type == "success") {
+    toast.success(re.data.message);
+  }
+  else {
+    toast.error(re.data.message);
+  }
+ }
+  useEffect(() => {
+    getSocialMedia();
+    getProfileData();
+  }, [])
+  
   return (
     <div className="flex justify-center items-center flex-col">
       <h1 className="font-bold text-3xl my-10">Settings</h1>
@@ -51,19 +170,15 @@ export default function TabsDemo() {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" defaultValue="Psycho Coder" />
+              <Input value={name} onChange={e=>setName(e.target.value)} id="name"  />
             </div>
             <div className="space-y-1">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@psycho" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="dp">Profile Picture</Label>
-              <Input id="picture" type="file" />
+              <Input  value={username} onChange={e=>setUsername(e.target.value)} id="username" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="dp">Bio</Label>
-              <Textarea placeholder="Write your one-liner bio here" />
+              <Textarea  value={bio} onChange={e=>setBio(e.target.value)} placeholder="Write your one-liner bio here" />
             </div>
           </CardContent>
           <CardFooter>
@@ -82,36 +197,24 @@ export default function TabsDemo() {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="current">Profile Visibility:</Label>
-              <RadioGroup defaultValue="comfortable">
+              <RadioGroup value={isPublic} onValueChange={handleChange}>
       <div className="flex items-center space-x-2">
-        <RadioGroupItem value="default" id="r1" />
+        <RadioGroupItem value="public" id="r1" />
         <Label htmlFor="r1">Pubic</Label>
       </div>
       <div className="flex items-center space-x-2">
-        <RadioGroupItem value="comfortable" id="r2" />
+        <RadioGroupItem value="private" id="r2" />
         <Label htmlFor="r2">Private</Label>
       </div>
     
     </RadioGroup>
             </div>
-            <div className="mt-10 space-y-1">
-              <Label htmlFor="current">Block List:</Label>
-              <div>
-                <div className="my-3 flex justify-between items-center">
-                  <Label>Psycho</Label>
-                  <Button variant={"destructive"}>Unblock</Button>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <Label>Churail</Label>
-                  <Button variant={"destructive"}>Unblock</Button>
-                </div>
-              </div>
-            </div>
+            
            
            
           </CardContent>
           <CardFooter>
-            <Button onClick={socialMediaSettings}>Save changes</Button>
+            <Button onClick={privacySettings}>Save changes</Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -126,19 +229,19 @@ export default function TabsDemo() {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="current">Facebook:</Label>
-              <Input id="facebook" placeholder={"facebook.com/psycho"} type="text" />
+              <Input value={facebook} onChange={e=>setFacebook(e.target.value)} id="facebook" placeholder={"facebook.com/psycho"} type="text" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="current">Twitter/X:</Label>
-              <Input id="twitter" placeholder={"x.com/psycho"} type="text" />
+              <Input  value={twitter} onChange={e=>setTwitter(e.target.value)} id="twitter" placeholder={"x.com/psycho"} type="text" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="current">Medium:</Label>
-              <Input id="medium" placeholder={"medium.com/psycho"} type="text" />
+              <Input  value={medium} onChange={e=>setMedium(e.target.value)} id="medium" placeholder={"medium.com/psycho"} type="text" />
             </div>
             <div className="space-y-1">
               <Label htmlFor="current">Substack:</Label>
-              <Input id="substack" placeholder={"substack.com/psycho"} type="text" />
+              <Input value={substack} onChange={e=>setSubstack(e.target.value)} id="substack" placeholder={"substack.com/psycho"} type="text" />
             </div>
            
           </CardContent>

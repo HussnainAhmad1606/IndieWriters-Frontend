@@ -23,7 +23,14 @@ const userSchema = new mongoose.Schema({
       },
       role: {
         type: String
-      }
+      },
+      bio: {
+        type: String
+      },
+      isPublic: {
+        type: Boolean
+      },
+      
     }, { timestamps: true });
 
 mongoose.models = {}
