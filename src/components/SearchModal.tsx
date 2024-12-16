@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import {useEffect, useState} from "react"
 import { Search } from "lucide-react"
 import { SearchResult } from "./SearchResult"
+import axios from "axios"
 export function SearchModal() {
     const [search, setSearch] = useState("");
     const [result, setResult] = useState([]);
@@ -97,10 +98,14 @@ export function SearchModal() {
 
 
     const searchResults = async()=> {
-        const results = posts.filter((post)=> post.title.includes(search) || post.excerpt.includes(search) || post.author.name.includes(search))
+        const results = await axios.post("/api/search/search", {
+          term: search
+        })
+        if (results.data.type == "success"){
 
-        // @ts-ignore
-        setResult(results);
+          // @ts-ignore
+          setResult(results.data.posts);
+        }
     }
 
       
@@ -130,7 +135,7 @@ export function SearchModal() {
             result.map((post, index)=> {
                 return (
                     <>
-                    <SearchResult key={index} title={post?.title} excerpt={post?.excerpt} author={post?.author.name}/>
+                    <SearchResult key={index} title={post?.title} excerpt={post?.description} id={post?._id} author={post?.author.name}/>
                     </>
                 )
             })

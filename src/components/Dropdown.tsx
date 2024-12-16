@@ -39,7 +39,7 @@ export function AvatarDropDown({ logout, userName, role, userId }:any) {
                     {
                         role=="admin"?(
                             <DropdownMenuItem>
-                        <Link href={`/admin`} className="flex items-center justify-between">
+                        <Link href={`/admin/dashboard`} className="flex items-center justify-between">
                             <Crown className="mr-2 h-4 w-4" />
                             <span>Admin Dashboard</span>
                         </Link>
@@ -53,6 +53,16 @@ export function AvatarDropDown({ logout, userName, role, userId }:any) {
                         <Link href={`/dashboard`} className="flex items-center justify-between">
                             <DashboardIcon className="mr-2 h-4 w-4" />
                             <span>Writer Dashboard</span>
+                        </Link>
+                    </DropdownMenuItem>
+                        ):null
+                    }
+                    {
+                        role=="publisher"?(
+                            <DropdownMenuItem>
+                        <Link href={`/publisher-dashboard`} className="flex items-center justify-between">
+                            <DashboardIcon className="mr-2 h-4 w-4" />
+                            <span>Publisher Dashboard</span>
                         </Link>
                     </DropdownMenuItem>
                         ):null

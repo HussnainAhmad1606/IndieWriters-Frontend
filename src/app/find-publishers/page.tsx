@@ -1,13 +1,18 @@
 "use client"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Book, Globe, Mail, Phone, User } from "lucide-react"
 import Link from "next/link"
+import axios from 'axios'
 
-// Mock data for publishers
-const publishers = [
+
+
+export default function BookPublishers() {
+  const [searchTerm, setSearchTerm] = useState("");
+  // Mock data for publishers
+const [publishers, setPublishers] = useState([
   {
     id: 1,
     name: "Penguin Random House",
@@ -53,15 +58,27 @@ const publishers = [
     phone: "+1 (646) 307-5151",
     genres: ["Fiction", "Non-fiction", "Academic"]
   },
-]
+])
 
-export default function BookPublishers() {
-  const [searchTerm, setSearchTerm] = useState("")
+  const getPublisher = async() =>
+{
+  const re = await axios.get("/api/book-requests/get-publishers");
+
+  if (re.data.type == "success") {
+    setPublishers([...publishers, ...re.data.publishers])
+  }
+
+  }
 
   const filteredPublishers = publishers.filter(publisher =>
     publisher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     publisher.genres.some(genre => genre.toLowerCase().includes(searchTerm.toLowerCase()))
   )
+
+  useEffect(() => {
+    getPublisher();
+  }, [])
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -106,14 +123,14 @@ export default function BookPublishers() {
             </CardContent>
             <CardFooter className="flex flex-col items-start gap-4">
               <div className="flex flex-wrap gap-2">
-                {publisher.genres.map((genre, index) => (
+                {publisher.genres?.map((genre, index) => (
                   <div key={index} className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-sm">
                     <Book className="inline-block mr-1 h-4 w-4" />
                     {genre}
                   </div>
                 ))}
               </div>
-              <Link href={`/publisher/${publisher.id}`} passHref>
+              <Link href={`/publisher/${publisher._id}`} passHref>
                 <Button className="w-full">
                   <User className="mr-2 h-4 w-4" />
                   View Profile

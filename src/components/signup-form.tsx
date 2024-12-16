@@ -29,12 +29,29 @@ export function SignupForm() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
   const accountCreate = async(role:string) => {
+    if (username == "" || name == "" || email == "" || password == "") {
+      toast.error("all fields are necessary");
+      return;
+    }
+
+    if (validateEmail(email)) {
+      console.log("Valid email address");
+  } else {
+      toast.error("Invalid email address");
+  }
+
     const data = {
       username: username,
       name: name,
       email: email,
-      password: password
+      password: password,
+      role: role
     }
     const response = await axios.post("/api/auth/signup", data)
     console.log(role)

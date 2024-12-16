@@ -61,7 +61,7 @@ const MyEditor = () => {
     const post = await axios.post("/api/posts/add-post", data);
     if (post.data.type == "success") {
       toast.success("Post Published Successfully");
-      router.push(`/posts/${post.data.postId}`)
+      router.push(`/explore/${post.data.postId}`)
     }
     else {
       toast.error(post.data.message)

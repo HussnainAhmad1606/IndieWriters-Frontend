@@ -27,7 +27,7 @@ function page({params}:any) {
     const [tags, setTags] = useState([])
 
 
-    const {UserId} = useUserStore();
+    const {UserId, Role} = useUserStore();
 
     const [comments, setComments] = useState([
       { id: 1, author: "Jane Smith", content: "Great article! Very insightful.", date: "April 16, 2023" },
@@ -136,7 +136,7 @@ function page({params}:any) {
     />
         <Separator className="my-6" />
        {
-        author?._id==UserId && (
+        (author?._id==UserId || Role=='admin') && (
           <Dialog>
           <DialogTrigger asChild>
             <Button className="mt-4">Edit Article</Button>

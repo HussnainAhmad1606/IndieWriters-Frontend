@@ -64,6 +64,8 @@ export function Navbar() {
 
   const {IsLogin, Username, Role} = useUserStore();
   const logout = async () => {
+    SetIsLogin(false);
+    localStorage.removeItem("token");
     toast.success("Logged out successfully");
   };
 

@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,6 +10,11 @@ import {
     TooltipProvider,
     TooltipTrigger,
   } from "@/components/ui/tooltip"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { toast } from "react-hot-toast"
 // Mock data for a single publisher
 const publisher = {
   id: 1,
@@ -40,6 +46,11 @@ const publisher = {
 }
 
 export default function PublisherView() {
+
+  const [message, setMessage] = useState("");
+  const apply = async() => {
+    toast.success("Application submitted successfully")
+  }
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
@@ -65,9 +76,27 @@ export default function PublisherView() {
     </TooltipProvider>
           </div>
         </div>
-        <Button size="lg">
-          Apply to Publish
-        </Button>
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="mt-4">   Apply to Publish</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Apply for publish book</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Your message:
+            </Label>
+            <Input value={message} onChange={e=>setMessage(e.target.value)} id="name" className="col-span-3" />
+        </div>
+      
+     
+
+            <Button onClick={apply}>Update</Button>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">

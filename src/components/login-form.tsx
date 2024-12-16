@@ -22,12 +22,20 @@ export function LoginForm() {
   const {SetIsLogin, SetUsername, SetEmail, SetUserId, SetRole} = useUserStore();
   const router = useRouter();
 
-  
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
   const login = async() => {
     const data = {
       email: email,
       password: password
     }
+    if (validateEmail(email)) {
+      console.log("Valid email address");
+  } else {
+      toast.error("Invalid email address");
+  }
     const response = await axios.post("/api/auth/login", data)
     console.log(response.data)
 

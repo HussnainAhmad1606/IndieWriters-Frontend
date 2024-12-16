@@ -18,8 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Link from "next/link"
 
-export function SearchResult({title, excerpt, author}:{title:string, excerpt:string, author:string}) {
+export function SearchResult({title, excerpt, author, id}:{title:string, excerpt:string, author:string}) {
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -29,8 +30,11 @@ export function SearchResult({title, excerpt, author}:{title:string, excerpt:str
       </CardHeader>
      
       <CardFooter className="flex justify-between">
+      <Link href={`/explore/${id}`}>
+          <Button>Read</Button>
 
-        <Button>Read</Button>
+      </Link>
+
       </CardFooter>
     </Card>
   )
